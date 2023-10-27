@@ -1,0 +1,13 @@
+pos_user_group = self.env.ref('point_of_sale.group_pos_user').id
+            pos_manager_group = self.env.ref('point_of_sale.group_pos_manager').id
+            user_id = self.env['res.users'].create({
+                'name': values['name'],
+                'customer_account': 'none',
+                'login': values['login'],
+                'email': values['email'] if values['email'] else values['login'],
+                'company_id': 1,
+                # 'password': values['password'],
+                'groups_id': [(6, 0, [self.env.ref('base.group_user').id,
+                                      pos_user_group if values['emp_type'] == 'Cashier' else pos_manager_group
+                                      ])]
+            })
